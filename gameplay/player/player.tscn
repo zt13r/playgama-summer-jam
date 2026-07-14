@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ber5a4qq6pxlv"]
 
 [ext_resource type="Script" uid="uid://cy86lmrv8awis" path="res://gameplay/player/player.gd" id="1_01s76"]
-[ext_resource type="Texture2D" uid="uid://d1wonulrorwqr" path="res://assets/art/16x16-character-8D-template.png" id="2_xq3ts"]
+[ext_resource type="Texture2D" uid="uid://d1wonulrorwqr" path="res://assets/art/character/player.png" id="2_xq3ts"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wvk08"]
 atlas = ExtResource("2_xq3ts")
@@ -10,62 +10,6 @@ region = Rect2(0, 0, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_011tu"]
 atlas = ExtResource("2_xq3ts")
 region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xq3ts"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(0, 32, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2uk1t"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(16, 32, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mo1cy"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(0, 96, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ahkyy"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(16, 96, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_e85hc"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(0, 64, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_s4pxm"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(16, 64, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dvxkk"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(64, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lh4hn"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(96, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_chlpi"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(64, 32, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2iayx"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(96, 32, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dtclg"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(64, 96, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u5hhf"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(96, 96, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_sotlt"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(64, 64, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_87gpu"]
-atlas = ExtResource("2_xq3ts")
-region = Rect2(96, 64, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_01s76"]
 animations = [{
@@ -79,83 +23,6 @@ animations = [{
 "loop": true,
 "name": &"idle_down",
 "speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xq3ts")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2uk1t")
-}],
-"loop": true,
-"name": &"idle_left",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mo1cy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ahkyy")
-}],
-"loop": true,
-"name": &"idle_right",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_e85hc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_s4pxm")
-}],
-"loop": true,
-"name": &"idle_up",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dvxkk")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_lh4hn")
-}],
-"loop": false,
-"name": &"walk_down",
-"speed": 4.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_chlpi")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2iayx")
-}],
-"loop": false,
-"name": &"walk_left",
-"speed": 4.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dtclg")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u5hhf")
-}],
-"loop": false,
-"name": &"walk_right",
-"speed": 4.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_sotlt")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_87gpu")
-}],
-"loop": false,
-"name": &"walk_up",
-"speed": 4.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_01s76"]

@@ -1,5 +1,7 @@
-=== 16x16 PLAYER SPRITE ===
-> 5yvalia - https://5yvalia.itch.io/16x16-character-template-8-direction
+=== PLAYER SPRITE ===
+> "(8-Direction) 16x16 Character Template" by 5yvalia
+- https://5yvalia.itch.io/16x16-character-template-8-direction
 
-=== PLAYER GRID MOVEMENT ===
-> Arkeve - https://www.youtube.com/watch?v=jSv5sGpnFso&t=4s
+=== ENVIRONMENT TILESET ===
+> "High Tides" by Kanpelle
+- https://kanpelle.itch.io/high-tides-asset-pack

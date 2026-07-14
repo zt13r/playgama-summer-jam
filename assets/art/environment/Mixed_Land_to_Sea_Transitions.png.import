@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1wonulrorwqr"
-path="res://.godot/imported/16x16-character-8D-template.png-fd9b8c12e4370dec51bc6c582ce37c80.ctex"
+uid="uid://bpuyyky1k22fq"
+path="res://.godot/imported/Mixed_Land_to_Sea_Transitions.png-f4f8315b25a30c5ac51d2aa0a8c2409b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/16x16-character-8D-template.png"
-dest_files=["res://.godot/imported/16x16-character-8D-template.png-fd9b8c12e4370dec51bc6c582ce37c80.ctex"]
+source_file="res://assets/art/environment/Mixed_Land_to_Sea_Transitions.png"
+dest_files=["res://.godot/imported/Mixed_Land_to_Sea_Transitions.png-f4f8315b25a30c5ac51d2aa0a8c2409b.ctex"]
 
 [params]
 
