@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://ber5a4qq6pxlv"]
+
+[ext_resource type="Script" uid="uid://cy86lmrv8awis" path="res://gameplay/player/player.gd" id="1_01s76"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_01s76"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"idle_down",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle_left",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle_right",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle_up",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_down",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_right",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_up",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_01s76"]
+size = Vector2(16, 16)
+
+[node name="Player" type="CharacterBody2D" unique_id=1732487721]
+script = ExtResource("1_01s76")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=28979652]
+sprite_frames = SubResource("SpriteFrames_01s76")
+animation = &"idle_left"
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1641932462]
+shape = SubResource("RectangleShape2D_01s76")
+debug_color = Color(1, 1, 0, 0.41960785)
