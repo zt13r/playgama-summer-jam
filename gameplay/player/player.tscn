@@ -37,6 +37,5 @@ sprite_frames = SubResource("SpriteFrames_01s76")
 animation = &"idle_down"
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=1641932462]
-visible = false
 shape = SubResource("RectangleShape2D_01s76")
 debug_color = Color(1, 1, 0, 0.41960785)

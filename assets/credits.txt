@@ -1,7 +1,3 @@
 === PLAYER SPRITE ===
 > "(8-Direction) 16x16 Character Template" by 5yvalia
 - https://5yvalia.itch.io/16x16-character-template-8-direction
-
-=== ENVIRONMENT TILESET ===
-> "High Tides" by Kanpelle
-- https://kanpelle.itch.io/high-tides-asset-pack

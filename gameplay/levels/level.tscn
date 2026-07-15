@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cx1jtkqgcg3ku"]
+
+[ext_resource type="Script" uid="uid://e3k07uvmdrr5" path="res://gameplay/levels/level.gd" id="1_nmj4b"]
+[ext_resource type="PackedScene" uid="uid://djv678w1nxwxg" path="res://gameplay/levels/sand_map/sand_map.tscn" id="2_35olu"]
+[ext_resource type="PackedScene" uid="uid://cuicu07bfgrhm" path="res://gameplay/levels/water_map/water_map.tscn" id="3_4bmxb"]
+
+[node name="Level" type="Node2D" unique_id=1947694877]
+script = ExtResource("1_nmj4b")
+
+[node name="Sand" parent="." unique_id=1438190820 instance=ExtResource("2_35olu")]
+
+[node name="Water" parent="." unique_id=1351570733 instance=ExtResource("3_4bmxb")]
+position = Vector2(512, 0)
+
+[node name="TideTimer" type="Timer" parent="." unique_id=364411897]
+
+[connection signal="timeout" from="TideTimer" to="." method="_on_high_tide_timer_timeout"]

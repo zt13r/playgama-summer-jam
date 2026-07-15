@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdsi1ufr5c2cq"
-path="res://.godot/imported/Land_to_Sea_Transitions.png-64f603bd8fdbf07561ee4b89c711d292.ctex"
+uid="uid://c1xhmon1q60mt"
+path="res://.godot/imported/sand.png-623d2a2bbb3d5e9aecb2e2e6b77ff33d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/environment/Land_to_Sea_Transitions.png"
-dest_files=["res://.godot/imported/Land_to_Sea_Transitions.png-64f603bd8fdbf07561ee4b89c711d292.ctex"]
+source_file="res://assets/art/environment/sand.png"
+dest_files=["res://.godot/imported/sand.png-623d2a2bbb3d5e9aecb2e2e6b77ff33d.ctex"]
 
 [params]
 
