@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://uni0kjnqjh1t"]
+
+[node name="WaterEntityUnit" type="Area2D" unique_id=1039743173]
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=48940534]
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=276574865]

@@ -1,18 +1,11 @@
-[gd_scene format=3 uid="uid://dmhnb0w7abuat"]
+[gd_scene format=3 uid="uid://evo53nikddmg"]
 
 [ext_resource type="Script" uid="uid://bb1q0hxrpvi3y" path="res://gameplay/levels/tiles/water/water_tile.gd" id="1_lj4jb"]
+[ext_resource type="PackedScene" uid="uid://djv678w1nxwxg" path="res://gameplay/levels/tiles/tile.tscn" id="1_rtbuu"]
 [ext_resource type="Texture2D" uid="uid://diu3jxdokpb7u" path="res://assets/art/environment/water.png" id="2_rtbuu"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sgnla"]
-size = Vector2(16, 16)
-
-[node name="Water" type="Area2D" unique_id=1740430888]
+[node name="WaterTile" unique_id=1668130180 instance=ExtResource("1_rtbuu")]
 script = ExtResource("1_lj4jb")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=444979805]
-position = Vector2(8, 8)
+[node name="Sprite" parent="." index="0" unique_id=1706168303]
 texture = ExtResource("2_rtbuu")
-
-[node name="Collision" type="CollisionShape2D" parent="." unique_id=269306984]
-position = Vector2(8, 8)
-shape = SubResource("RectangleShape2D_sgnla")

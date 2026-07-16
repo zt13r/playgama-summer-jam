@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://djv678w1nxwxg"]
+
+[ext_resource type="Script" uid="uid://c8wiuy3gnot6h" path="res://gameplay/levels/tiles/tile.gd" id="1_5f86n"]
+[ext_resource type="Texture2D" uid="uid://bxjvlkykkvvbw" path="res://assets/art/environment/selected_overlay.png" id="3_skfhr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_apdbe"]
+size = Vector2(16, 16)
+
+[node name="Tile" type="Area2D" unique_id=1668130180]
+script = ExtResource("1_5f86n")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1706168303]
+position = Vector2(8, 8)
+
+[node name="SelectedOverlay" type="Sprite2D" parent="Sprite" unique_id=1543811099]
+visible = false
+self_modulate = Color(1, 1, 0, 0.47058824)
+texture = ExtResource("3_skfhr")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1595060523]
+visible = false
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_apdbe")
+
+[node name="MoveTarget" type="Marker2D" parent="." unique_id=1793707515]
+position = Vector2(8, 8)
+gizmo_extents = 8.0
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
