@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://djv678w1nxwxg"]
+
+[ext_resource type="Script" uid="uid://oxhuu81ri7fe" path="res://gameplay/levels/tiles/sand/sand_tile.gd" id="1_bcv3o"]
+[ext_resource type="Texture2D" uid="uid://c1xhmon1q60mt" path="res://assets/art/environment/sand.png" id="2_c5td2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_apdbe"]
+size = Vector2(16, 16)
+
+[node name="Sand" type="Area2D" unique_id=1668130180]
+script = ExtResource("1_bcv3o")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1706168303]
+position = Vector2(8, 8)
+texture = ExtResource("2_c5td2")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1595060523]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_apdbe")

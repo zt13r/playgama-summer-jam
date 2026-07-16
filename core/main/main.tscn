@@ -18,3 +18,4 @@ unique_name_in_owner = true
 
 [node name="Player" parent="World/EntityRoot" unique_id=1732487721 instance=ExtResource("3_vwfi5")]
 position = Vector2(264, 136)
+move_duration = null
