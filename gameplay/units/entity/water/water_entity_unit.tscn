@@ -1,7 +1,16 @@
 [gd_scene format=3 uid="uid://uni0kjnqjh1t"]
 
+[ext_resource type="Script" uid="uid://by0kcb7wlt25t" path="res://gameplay/units/entity/water/water_entity_unit.gd" id="1_6iwh4"]
+[ext_resource type="Texture2D" uid="uid://b6sbdes8hpe5j" path="res://assets/art/character/water_unit/water_entity_unit.png" id="2_tj2fh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tj2fh"]
+radius = 8.0
+
 [node name="WaterEntityUnit" type="Area2D" unique_id=1039743173]
+script = ExtResource("1_6iwh4")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=48940534]
+texture = ExtResource("2_tj2fh")
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=276574865]
+shape = SubResource("CircleShape2D_tj2fh")

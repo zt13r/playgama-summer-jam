@@ -3,6 +3,7 @@ class_name Unit
 extends Area2D
 
 
+@export_range(1, 5) var target_priority : int = 1
 @export var base_health : float = 100.0
 @export var base_damage : float = 5.0
 
@@ -44,7 +45,14 @@ func _init_unit() -> void:
 func get_tile(pos : Vector2i) -> Tile:
 	if current_level == null:
 		return null
+	if pos not in current_level.tiles:
+		print("cant")
+		return null
 	return current_level.tiles[pos]
+
+
+func get_priority_level() -> int:
+	return target_priority
 
 
 func take_damage(amount : float) -> void:

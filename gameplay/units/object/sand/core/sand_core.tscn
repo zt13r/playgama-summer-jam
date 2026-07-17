@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cd8d5qqtl442s"]
+
+[ext_resource type="Script" uid="uid://bvyr8yti6ngod" path="res://gameplay/units/object/sand/core/sand_core.gd" id="1_poxqw"]
+[ext_resource type="Texture2D" uid="uid://bxjvlkykkvvbw" path="res://assets/art/environment/selected_overlay.png" id="2_3op2y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3op2y"]
+size = Vector2(16, 16)
+
+[node name="SandCore" type="Area2D" unique_id=815823080]
+script = ExtResource("1_poxqw")
+base_health = 500.0
+base_damage = 10.0
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1560036887]
+position = Vector2(8, 8)
+texture = ExtResource("2_3op2y")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1874989669]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_3op2y")

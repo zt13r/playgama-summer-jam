@@ -42,6 +42,10 @@ func receive_object_unit(new_object_unit : ObjectUnit) -> void:
 		object_unit = new_object_unit
 
 
+func update_position(direction : Vector2i) -> void:
+	current_position += direction
+
+
 func get_neighbor_tiles() -> void:
 	var top_position : Vector2i = Vector2i(current_position + Vector2i.UP)
 	var left_position : Vector2i = Vector2i(current_position + Vector2i.LEFT)

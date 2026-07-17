@@ -9,3 +9,5 @@ script = ExtResource("1_lj4jb")
 
 [node name="Sprite" parent="." index="0" unique_id=1706168303]
 texture = ExtResource("2_rtbuu")
+
+[connection signal="area_entered" from="." to="." method="_on_sand_overlap"]
