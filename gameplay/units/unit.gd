@@ -16,12 +16,13 @@ var current_position : Vector2i = Vector2i.ZERO
 var health : float = 0.0
 var damage : float = 0.0
 
-
-@onready var level_root : Node2D = %LevelRoot
+var level_root : Node2D = null
 
 
 func _ready() -> void:
 	_init_unit()
+	level_root = get_tree().get_first_node_in_group("LevelRoot")
+	print(level_root)
 
 
 func _init_unit() -> void:
