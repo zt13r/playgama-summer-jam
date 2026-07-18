@@ -50,6 +50,7 @@ var really_high_tide_active = false
 
 
 @onready var sand_tiles : Node2D = $SandTiles
+@onready var sand_core_node : Node2D = $SandTiles/Core
 @onready var water_tiles: Node2D = $WaterTiles
 @onready var water_unit_spawners : Node2D = $WaterTiles/Spawners
 
@@ -66,7 +67,9 @@ func _ready() -> void:
 
 	_spawn_sand_tiles()
 	_spawn_water_tiles()
-	_get_neighbor_tiles_for_each_tile()
+	_set_neighbor_tiles_for_each_tile()
+
+	generate_flow_field()
 
 	# Debug
 	#really_high_tide_chance = 1.0
@@ -106,7 +109,7 @@ func _spawn_sand_tiles() -> void:
 				sand_core.global_position = tile_position * tile_size
 				sand_core.current_position = tile_position
 				sand_tile.object_unit = sand_core
-				add_child(sand_core)
+				sand_core_node.add_child(sand_core)
 
 			# Tile stuff and adding the tile to the scene
 			sand_tile.global_position = tile_position * tile_size
@@ -153,9 +156,46 @@ func _cool_wave_animation() -> void:
 	pass
 
 
-func _get_neighbor_tiles_for_each_tile() -> void:
+func _set_neighbor_tiles_for_each_tile() -> void:
 	for tile in tiles.values():
-		tile.get_neighbor_tiles()
+		tile.set_neighbor_tiles()
+
+
+func generate_flow_field() -> void:
+	if sand_core_node.get_child_count() <= 0:
+		push_error("SandCore node not found.")
+		return
+
+	var sand_core : SandCore = sand_core_node.get_child(0) as SandCore
+	var sand_core_tile : SandTile = sand_core.current_tile
+	var tiles_to_search : Array[Tile] = tiles.values()
+
+	# BFS
+	while not tiles_to_search.is_empty():
+		var visited : Dictionary[Tile, bool] = {}
+		var queue : Array[Tile] = []
+
+		for tile in tiles_to_search:
+			var neighbor_tiles : Array[Tile] = tile.get_neighbor_tiles().values()
+
+			for neighbor in neighbor_tiles:
+				if not neighbor.is_walkable():
+					continue
+				if neighbor in visited:
+					continue
+
+				if not neighbor in queue:
+					queue.append(neighbor)
+					visited[neighbor] = true
+					neighbor.set_next_tile(tile)
+
+					if neighbor == sand_core:
+						# Target reached
+						tiles_to_search.erase(tile)
+						break
+			tiles_to_search.erase(tile)
+
+		await get_tree().process_frame
 
 
 func high_tide() -> void:
@@ -165,7 +205,8 @@ func high_tide() -> void:
 			water_tiles.position.x += Vector2i.LEFT.x * tile_size
 			# Update tile positions
 			for tile in tiles.values():
-				tile.update_position(Vector2i.LEFT)
+				if tile is WaterTile:
+					tile.update_position(Vector2i.LEFT)
 			await get_tree().create_timer(time_between_steps).timeout
 		really_high_tide_active = true
 	else:
@@ -174,7 +215,8 @@ func high_tide() -> void:
 			water_tiles.position.x += Vector2i.LEFT.x * tile_size
 			# Update tile positions
 			for tile in tiles.values():
-				tile.update_position(Vector2i.LEFT)
+				if tile is WaterTile:
+					tile.update_position(Vector2i.LEFT)
 			await get_tree().create_timer(time_between_steps).timeout
 
 	tide_duration_timer.start()
@@ -187,7 +229,8 @@ func low_tide() -> void:
 			water_tiles.position.x += Vector2i.RIGHT.x * tile_size
 			# Update tile positions
 			for tile in tiles.values():
-				tile.update_position(Vector2i.LEFT)
+				if tile is WaterTile:
+					tile.update_position(Vector2i.RIGHT)
 			await get_tree().create_timer(time_between_steps).timeout
 		really_high_tide_active = false
 	else:
@@ -196,7 +239,8 @@ func low_tide() -> void:
 			water_tiles.position.x += Vector2i.RIGHT.x * tile_size
 			# Update tile positions
 			for tile in tiles.values():
-				tile.update_position(Vector2i.LEFT)
+				if tile is WaterTile:
+					tile.update_position(Vector2i.RIGHT)
 			await get_tree().create_timer(time_between_steps).timeout
 
 

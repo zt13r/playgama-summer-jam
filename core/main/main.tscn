@@ -27,3 +27,8 @@ move_duration = null
 [node name="WaterEntityUnit" parent="World/EntityRoot/EntityUnits" unique_id=1039743173 instance=ExtResource("4_yibi5")]
 unique_name_in_owner = true
 position = Vector2(456, 136)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1867535301]
+position = Vector2(433, 200)
+enabled = false
+zoom = Vector2(2.5, 2.5)

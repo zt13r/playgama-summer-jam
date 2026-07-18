@@ -23,9 +23,10 @@ Game="*uid://cfqxrferol6mr"
 
 window/size/viewport_width=640
 window/size/viewport_height=360
-window/size/window_width_override=960
-window/size/window_height_override=540
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
 
 [file_customization]
@@ -35,6 +36,10 @@ folder_colors={
 "res://core/": "pink",
 "res://gameplay/": "orange"
 }
+
+[gui]
+
+theme/custom_font="uid://dr2f7nbydrgou"
 
 [input]
 
