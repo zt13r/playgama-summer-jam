@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://chehuhpiikr44"]
+
+[ext_resource type="Script" uid="uid://d1imia6pxt3me" path="res://02_gameplay/00_units/sand/object/sand_wall/sand_wall.gd" id="1_7e467"]
+[ext_resource type="Texture2D" uid="uid://c1xhmon1q60mt" path="res://03_assets/art/environment/sand.png" id="2_jltyx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gx8jp"]
+size = Vector2(16, 16)
+
+[node name="SandWall" type="Area2D" unique_id=376002577]
+script = ExtResource("1_7e467")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=845476447]
+self_modulate = Color(0.39846507, 0.39846504, 0.39846504, 1)
+texture = ExtResource("2_jltyx")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=626769107]
+visible = false
+shape = SubResource("RectangleShape2D_gx8jp")

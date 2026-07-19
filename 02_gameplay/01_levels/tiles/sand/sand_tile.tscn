@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://3vrxcdogc3cr"]
+
+[ext_resource type="Script" uid="uid://oxhuu81ri7fe" path="res://02_gameplay/01_levels/tiles/sand/sand_tile.gd" id="1_bcv3o"]
+[ext_resource type="PackedScene" uid="uid://djv678w1nxwxg" path="res://02_gameplay/01_levels/tiles/tile.tscn" id="1_p513m"]
+[ext_resource type="Texture2D" uid="uid://c1xhmon1q60mt" path="res://03_assets/art/environment/sand.png" id="2_c5td2"]
+
+[node name="SandTile" unique_id=1668130180 instance=ExtResource("1_p513m")]
+script = ExtResource("1_bcv3o")
+
+[node name="Sprite" parent="." index="0" unique_id=1706168303]
+scale = Vector2(2, 2)
+texture = ExtResource("2_c5td2")

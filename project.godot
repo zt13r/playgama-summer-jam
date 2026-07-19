@@ -34,6 +34,7 @@ folder_colors={
 "res://00_debug/": "green",
 "res://01_core/": "pink",
 "res://02_gameplay/": "orange",
+"res://02_gameplay/03_ui/": "blue",
 "res://03_assets/": "teal"
 }
 

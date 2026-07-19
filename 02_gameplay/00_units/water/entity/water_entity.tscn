@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c725irxxehf6b"]
+
+[ext_resource type="Texture2D" uid="uid://b6sbdes8hpe5j" path="res://03_assets/art/units/water_unit/water_entity_unit.png" id="1_7ld6t"]
+[ext_resource type="Script" uid="uid://bm5e2dplmwruk" path="res://02_gameplay/00_units/water/entity/water_entity.gd" id="1_l0fx0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qgx6a"]
+size = Vector2(16, 16)
+
+[node name="WaterEntity" type="Area2D" unique_id=147535073]
+script = ExtResource("1_l0fx0")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=701672759]
+texture = ExtResource("1_7ld6t")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1722028003]
+visible = false
+shape = SubResource("RectangleShape2D_qgx6a")

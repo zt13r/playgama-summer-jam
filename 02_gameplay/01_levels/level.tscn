@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cx1jtkqgcg3ku"]
+
+[ext_resource type="Script" uid="uid://e3k07uvmdrr5" path="res://02_gameplay/01_levels/level.gd" id="1_nmj4b"]
+[ext_resource type="PackedScene" uid="uid://3vrxcdogc3cr" path="res://02_gameplay/01_levels/tiles/sand/sand_tile.tscn" id="2_35olu"]
+[ext_resource type="PackedScene" uid="uid://evo53nikddmg" path="res://02_gameplay/01_levels/tiles/water/water_tile.tscn" id="3_35olu"]
+
+[node name="Level" type="Node2D" unique_id=1947694877]
+script = ExtResource("1_nmj4b")
+sand_scene = ExtResource("2_35olu")
+water_scene = ExtResource("3_35olu")
+
+[node name="SandTiles" type="Node2D" parent="." unique_id=509537805]
+unique_name_in_owner = true
+
+[node name="WaterTiles" type="Node2D" parent="." unique_id=47345623]
+unique_name_in_owner = true
+
+[node name="TideCooldownTimer" type="Timer" parent="." unique_id=364411897]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="TideDurationTimer" type="Timer" parent="." unique_id=1351248864]
+unique_name_in_owner = true
+one_shot = true
+
+[connection signal="timeout" from="TideCooldownTimer" to="." method="_on_tide_cooldown_timer_timeout"]
+[connection signal="timeout" from="TideDurationTimer" to="." method="_on_tide_duration_timer_timeout"]

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cqyd4eat2b1ji"]
+
+[ext_resource type="Script" uid="uid://xdqqlkmt6e1q" path="res://02_gameplay/03_ui/unit_selection/unit_selection.gd" id="1_xgkvh"]
+
+[node name="UnitSelection" type="Control" unique_id=812014607]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xgkvh")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=723544474]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -176.0
+grow_horizontal = 2
+grow_vertical = 0
