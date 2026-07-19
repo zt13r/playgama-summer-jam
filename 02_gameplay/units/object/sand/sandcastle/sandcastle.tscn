@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://81xce2bpxx7n"]
+
+[ext_resource type="Script" uid="uid://b3hp77ls7ec05" path="res://02_gameplay/units/object/sand/sandcastle/sandcastle.gd" id="1_nnx8w"]
+[ext_resource type="Texture2D" uid="uid://c1xhmon1q60mt" path="res://03_assets/art/environment/sand.png" id="2_s5rtb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_56x7h"]
+size = Vector2(16, 16)
+
+[node name="Sandcastle" type="Area2D" unique_id=835278976]
+script = ExtResource("1_nnx8w")
+base_health = 1000.0
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1190485705]
+self_modulate = Color(1, 0, 0, 1)
+texture = ExtResource("2_s5rtb")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1484754061]
+visible = false
+shape = SubResource("RectangleShape2D_56x7h")

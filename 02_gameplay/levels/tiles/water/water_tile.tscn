@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://evo53nikddmg"]
+
+[ext_resource type="Script" uid="uid://bb1q0hxrpvi3y" path="res://02_gameplay/levels/tiles/water/water_tile.gd" id="1_lj4jb"]
+[ext_resource type="PackedScene" uid="uid://djv678w1nxwxg" path="res://02_gameplay/levels/tiles/tile.tscn" id="1_rtbuu"]
+[ext_resource type="Texture2D" uid="uid://diu3jxdokpb7u" path="res://03_assets/art/environment/water.png" id="2_rtbuu"]
+
+[node name="WaterTile" unique_id=1668130180 instance=ExtResource("1_rtbuu")]
+script = ExtResource("1_lj4jb")
+
+[node name="Sprite" parent="." index="0" unique_id=1706168303]
+scale = Vector2(2, 2)
+texture = ExtResource("2_rtbuu")
+
+[connection signal="area_entered" from="." to="." method="_on_sand_overlap"]

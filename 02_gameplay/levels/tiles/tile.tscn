@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://djv678w1nxwxg"]
+
+[ext_resource type="Script" uid="uid://c8wiuy3gnot6h" path="res://02_gameplay/levels/tiles/tile.gd" id="1_5f86n"]
+[ext_resource type="Texture2D" uid="uid://brtkjuuqxr6es" path="res://00_debug/arrow/arrow.png" id="3_5f86n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_apdbe"]
+size = Vector2(32, 32)
+
+[node name="Tile" type="Area2D" unique_id=1668130180]
+script = ExtResource("1_5f86n")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1706168303]
+position = Vector2(16, 16)
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1595060523]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_apdbe")
+
+[node name="MoveTarget" type="Marker2D" parent="." unique_id=1793707515]
+unique_name_in_owner = true
+position = Vector2(16, 16)
+gizmo_extents = 16.0
+
+[node name="ArrowDebug" type="Sprite2D" parent="." unique_id=1458955445]
+self_modulate = Color(1, 1, 1, 0.39215687)
+position = Vector2(16, 16)
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("3_5f86n")
+
+[node name="CostLabelDebug" type="Label" parent="." unique_id=425425508]
+offset_right = 32.0
+offset_bottom = 32.0
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -13,7 +13,7 @@ config_version=5
 config/name="Playgama Summer Jam"
 run/main_scene="uid://ckxrfmk2puhba"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://assets/art/icon.svg"
+config/icon="uid://dyy8er5kilmr2"
 
 [autoload]
 
@@ -21,25 +21,21 @@ Game="*uid://cfqxrferol6mr"
 
 [display]
 
-window/size/viewport_width=640
-window/size/viewport_height=360
-window/size/window_width_override=1280
-window/size/window_height_override=720
-window/stretch/mode="viewport"
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/window_width_override=1024
+window/size/window_height_override=576
+window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/stretch/scale_mode="integer"
 
 [file_customization]
 
 folder_colors={
-"res://assets/": "teal",
-"res://core/": "pink",
-"res://gameplay/": "orange"
+"res://00_debug/": "green",
+"res://01_core/": "pink",
+"res://02_gameplay/": "orange",
+"res://03_assets/": "teal"
 }
-
-[gui]
-
-theme/custom_font="uid://dr2f7nbydrgou"
 
 [input]
 

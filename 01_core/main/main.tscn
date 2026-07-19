@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://ckxrfmk2puhba"]
+
+[ext_resource type="Script" uid="uid://7laa6tuuc6fl" path="res://01_core/main/main.gd" id="1_8fcwd"]
+[ext_resource type="PackedScene" uid="uid://cx1jtkqgcg3ku" path="res://02_gameplay/levels/level.tscn" id="4_k5wvu"]
+
+[node name="Main" type="Node" unique_id=1611701265]
+script = ExtResource("1_8fcwd")
+
+[node name="World" type="Node2D" parent="." unique_id=900157210]
+
+[node name="LevelRoot" type="Node2D" parent="World" unique_id=894817777 groups=["LevelRoot"]]
+unique_name_in_owner = true
+
+[node name="Level" parent="World/LevelRoot" unique_id=1947694877 instance=ExtResource("4_k5wvu")]
+
+[node name="EntityRoot" type="Node2D" parent="World" unique_id=1223127069]
+
+[node name="SandUnits" type="Node2D" parent="World/EntityRoot" unique_id=1889190971]
+
+[node name="WaterUnits" type="Node2D" parent="World/EntityRoot" unique_id=591271402]
