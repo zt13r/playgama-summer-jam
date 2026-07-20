@@ -20,6 +20,7 @@ var walkable : bool = true
 
 
 @onready var unit_target : Marker2D = %UnitTarget
+@onready var selected_overlay : Sprite2D = %SelectedOverlay
 
 
 func _ready() -> void:
@@ -27,6 +28,8 @@ func _ready() -> void:
 		connect("mouse_entered", _on_mouse_entered)
 	if not is_connected("mouse_exited", _on_mouse_exited):
 		connect("mouse_exited", _on_mouse_exited)
+
+	selected_overlay.hide()
 
 
 func _physics_process(_delta: float) -> void:
@@ -89,6 +92,17 @@ func set_next_tile(tile : Tile) -> void:
 		Vector2i.DOWN : $ArrowDebug.rotation_degrees = 180.0
 
 
+func select() -> void:
+	await get_tree().process_frame
+	selected_overlay.show()
+	current_level.selected_tile_position = current_position
+
+
+func deselect() -> void:
+	current_level.selected_tile_position = Vector2i.ZERO
+	selected_overlay.hide()
+
+
 # Debug
 func update_cost_label(cost : int) -> void:
 	$CostLabelDebug.text = str(cost)
@@ -109,6 +123,14 @@ func get_object_unit() -> Unit:
 	return object_unit
 
 
+func set_buildable(can : bool) -> void:
+	buildable = can
+
+
+func set_walkable(can : bool) -> void:
+	walkable = can
+
+
 func is_buildable() -> bool:
 	return buildable
 
@@ -118,10 +140,11 @@ func is_walkable() -> bool:
 
 
 func _on_mouse_entered() -> void:
-	highlighted = true
-	print("yay") 
+	if current_level == null:
+		push_error("Level reference is null.")
+		return
+	select()
 
 
 func _on_mouse_exited() -> void:
-	highlighted = false
-	print("nay")
+	deselect()

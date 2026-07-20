@@ -5,24 +5,16 @@
 [ext_resource type="PackedScene" uid="uid://cx1jtkqgcg3ku" path="res://02_gameplay/01_levels/level.tscn" id="4_k5wvu"]
 
 [node name="Main" type="Node" unique_id=1611701265]
+process_mode = 3
 script = ExtResource("1_8fcwd")
 
 [node name="World" type="Node2D" parent="." unique_id=900157210]
+process_mode = 1
 
 [node name="LevelRoot" type="Node2D" parent="World" unique_id=894817777 groups=["LevelRoot"]]
 unique_name_in_owner = true
 
 [node name="Level" parent="World/LevelRoot" unique_id=1947694877 instance=ExtResource("4_k5wvu")]
-tile_y = 17
-sand_x = 32
-sand_castle_position = Vector2i(3, 8)
-water_x = 20
-time_between_tide_steps = 1.0
-high_tide_steps = 5
-high_tide_duration = 7.0
-really_high_tide_steps = 10
-really_high_tide_duration = 4.0
-really_high_tide_chance = 0.15
 
 [node name="EntityRoot" type="Node2D" parent="World" unique_id=1223127069]
 
@@ -31,6 +23,8 @@ really_high_tide_chance = 0.15
 [node name="WaterUnits" type="Node2D" parent="World/EntityRoot" unique_id=591271402 groups=["WaterUnits"]]
 
 [node name="HudLayer" type="CanvasLayer" parent="." unique_id=1071067297]
+process_mode = 1
+layer = 10
 
 [node name="HudRoot" type="Control" parent="HudLayer" unique_id=249488509]
 layout_mode = 3
@@ -39,6 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="UnitSelection" parent="HudLayer/HudRoot" unique_id=812014607 groups=["UnitSelection"] instance=ExtResource("3_50ley")]
 layout_mode = 1

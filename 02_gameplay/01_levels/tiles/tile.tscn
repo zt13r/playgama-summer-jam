@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://djv678w1nxwxg"]
 
 [ext_resource type="Script" uid="uid://c8wiuy3gnot6h" path="res://02_gameplay/01_levels/tiles/tile.gd" id="1_5f86n"]
+[ext_resource type="Texture2D" uid="uid://c2hvecaxwoa77" path="res://03_assets/art/environment/selected.png" id="3_5c4m4"]
 [ext_resource type="Texture2D" uid="uid://brtkjuuqxr6es" path="res://00_debug/arrow/arrow.png" id="3_5f86n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_apdbe"]
@@ -13,6 +14,7 @@ script = ExtResource("1_5f86n")
 position = Vector2(16, 16)
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=1595060523]
+visible = false
 position = Vector2(16, 16)
 shape = SubResource("RectangleShape2D_apdbe")
 
@@ -32,6 +34,14 @@ offset_right = 32.0
 offset_bottom = 32.0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SelectedOverlay" type="Sprite2D" parent="." unique_id=929698787]
+unique_name_in_owner = true
+visible = false
+z_index = 5
+position = Vector2(16, 16)
+scale = Vector2(1.9999998, 2)
+texture = ExtResource("3_5c4m4")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

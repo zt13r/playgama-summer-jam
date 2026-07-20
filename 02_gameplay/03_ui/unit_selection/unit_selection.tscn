@@ -4,11 +4,12 @@
 
 [node name="UnitSelection" type="Control" unique_id=812014607]
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
 script = ExtResource("1_xgkvh")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=723544474]
@@ -20,3 +21,23 @@ anchor_bottom = 1.0
 offset_top = -176.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=48863667]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="PanelContainer/HBoxContainer" unique_id=875145655]
+layout_mode = 2
+text = "hbox test"
+
+[node name="Button2" type="Button" parent="PanelContainer/HBoxContainer" unique_id=226266397]
+layout_mode = 2
+text = "hbox test"
+
+[node name="Button3" type="Button" parent="PanelContainer/HBoxContainer" unique_id=1419188165]
+layout_mode = 2
+text = "hbox test"
+
+[node name="Button4" type="Button" parent="PanelContainer/HBoxContainer" unique_id=1102240320]
+layout_mode = 2
+text = "hbox test"
