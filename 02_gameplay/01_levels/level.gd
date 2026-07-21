@@ -3,6 +3,7 @@ extends Node2D
 
 
 const COST_INCREMENT : int = 1
+const MAX_COST : int = 9999
 
 
 @export var unit_selection : UnitSelection :
@@ -184,7 +185,6 @@ func _place_unit() -> void:
 
 
 func generate_flow_field() -> void:
-	var searched_tiles : Dictionary[Vector2i, Tile] = {}
 	var costs : Dictionary[Vector2i, int] = {}
 	var visited : Dictionary[Vector2i, bool] = {}
 	var queue : Array[Vector2i] = []
@@ -199,7 +199,6 @@ func generate_flow_field() -> void:
 		push_error("Sandcastle not found; cannot start Flow Field.")
 		return
 
-	searched_tiles[target_position] = get_tile(target_position)
 	costs[target_position] = 0
 	visited[target_position] = true
 	queue.append(target_position)
@@ -214,32 +213,25 @@ func generate_flow_field() -> void:
 		# Loop through current_tile's neighbors
 		for neighbor_position in neighbors:
 			var neighbor_tile : Tile = neighbors[neighbor_position]
+ 
+			# Skip if not walkable
+			if not neighbor_tile.is_walkable():
+				costs[neighbor_position] = MAX_COST
+				continue
 
 			# Skip if already visited
 			if neighbor_position in visited:
-				if neighbor_position in queue:
-					queue.erase(neighbor_position) # Remove from queue
 				continue
 
-			# Add to queue
 			queue.append(neighbor_position)
-
-			# Skip if not walkable
-			if not neighbor_tile.is_walkable():
-				continue
-
-			# Some safety skip? Idk
-			if current_position not in costs:
-				continue
 
 			visited[neighbor_position] = true
 			costs[neighbor_position] = costs[current_position] + COST_INCREMENT
-			searched_tiles[neighbor_position] = neighbor_tile
 
 			# Debug
 			neighbor_tile.update_cost_label(costs[neighbor_position])
 
-		# Uncomment to see the calculations much slower (cool animation),
+		# Uncomment to see the calculations much slower,
 		# as long as this line vvvvv
 		# "neighbor_tile.update_cost_label(costs[neighbor_position])"
 		# is not commented out ^^^^^
@@ -247,29 +239,22 @@ func generate_flow_field() -> void:
 		#await get_tree().process_frame
 
 	# Flow direction
-	for tile_position in searched_tiles:
+	for tile_position in tiles:
 		var current_tile : Tile = get_tile(tile_position)
-
-		if not current_tile.is_walkable() or \
-			tile_position not in costs:
-				break
-
 		var neighbors : Dictionary[Vector2i, Tile] = \
 			current_tile.get_neighbors()
 
 		for neighbor_position in neighbors:
-			var neighbor_tile : Tile = neighbors[neighbor_position]
-
-			if not neighbor_tile.is_walkable() or \
-				neighbor_position not in costs:
-					neighbor_tile.set_next_tile(null)
+			if neighbor_position not in costs or \
+				tile_position not in costs:
 					continue
 
-			if costs[neighbor_position] < costs[tile_position]:
+			if costs[neighbor_position] <= costs[tile_position]:
+				var neighbor_tile : Tile = neighbors[neighbor_position]
 				current_tile.set_next_tile(neighbor_tile)
 				break
 
-		# Uncomment to see the calculations much slower, cool animation
+		# Uncomment to see the calculations much slower
 		#await get_tree().process_frame
 
 
