@@ -63,6 +63,11 @@ var tile_size : int = 0
 
 var really_high_tide : bool = false
 
+# Flow field
+var costs : Dictionary[Vector2i, int] = {}
+var visited : Dictionary[Vector2i, bool] = {}
+var queue : Array[Vector2i] = []
+
 
 @onready var sand_tiles : Node2D = %SandTiles
 @onready var water_tiles : Node2D = %WaterTiles
@@ -167,14 +172,22 @@ func _place_unit() -> void:
 		sand_units.add_child(unit)
 
 		if unit is SandObject:
+			if not can_pathfind():
+				push_error("Don't block the route!")
+				return
 			tile.set_walkable(false)
-			generate_flow_field()
+			_update_costs(selected_tile_position)
+			_update_flow(selected_tile_position)
 
 	elif unit is WaterUnit:
 
 		if unit is WaterObject:
+			if not can_pathfind():
+				push_error("Don't block the route!")
+				return
 			tile.set_walkable(false)
-			generate_flow_field()
+			_update_costs(selected_tile_position)
+			_update_flow(selected_tile_position)
 
 		water_units.add_child(unit)
 
@@ -184,10 +197,55 @@ func _place_unit() -> void:
 	tile.set_buildable(false)
 
 
+func _update_costs(tile_position : Vector2i) -> void:
+	var current_tile : Tile = get_tile(tile_position)
+	var neighbors : Dictionary[Vector2i, Tile] = \
+		current_tile.get_neighbors()
+
+	# Loop through current_tile's neighbors
+	for neighbor_position in neighbors:
+		var neighbor_tile : Tile = neighbors[neighbor_position]
+
+		# Skip if not walkable
+		if not neighbor_tile.is_walkable():
+			costs[neighbor_position] = MAX_COST
+			continue
+
+		# Skip if already visited
+		if neighbor_position in visited:
+			continue
+
+		queue.append(neighbor_position)
+
+		visited[neighbor_position] = true
+		costs[neighbor_position] = costs[tile_position] + COST_INCREMENT
+
+		# Debug
+		neighbor_tile.update_cost_label(costs[neighbor_position])
+
+
+func _update_flow(tile_position : Vector2i) -> void:
+	var current_tile : Tile = get_tile(tile_position)
+	var neighbors : Dictionary[Vector2i, Tile] = \
+		current_tile.get_neighbors()
+
+	for neighbor_position in neighbors:
+		if neighbor_position not in costs or \
+			tile_position not in costs:
+				continue
+
+		if costs[neighbor_position] <= costs[tile_position]:
+			var neighbor_tile : Tile = neighbors[neighbor_position]
+			current_tile.set_next_tile(neighbor_tile)
+			break
+
+
 func generate_flow_field() -> void:
-	var costs : Dictionary[Vector2i, int] = {}
-	var visited : Dictionary[Vector2i, bool] = {}
-	var queue : Array[Vector2i] = []
+	# Clear
+	costs.clear()
+	visited.clear()
+	queue.clear()
+
 	var target_position : Vector2i = Vector2i(-1, -1)
 
 	# Find target position
@@ -206,30 +264,7 @@ func generate_flow_field() -> void:
 	# Breadth-first Search
 	while not queue.is_empty():
 		var current_position : Vector2i = queue.pop_front()
-		var current_tile : Tile = get_tile(current_position)
-		var neighbors : Dictionary[Vector2i, Tile] = \
-			current_tile.get_neighbors()
-
-		# Loop through current_tile's neighbors
-		for neighbor_position in neighbors:
-			var neighbor_tile : Tile = neighbors[neighbor_position]
- 
-			# Skip if not walkable
-			if not neighbor_tile.is_walkable():
-				costs[neighbor_position] = MAX_COST
-				continue
-
-			# Skip if already visited
-			if neighbor_position in visited:
-				continue
-
-			queue.append(neighbor_position)
-
-			visited[neighbor_position] = true
-			costs[neighbor_position] = costs[current_position] + COST_INCREMENT
-
-			# Debug
-			neighbor_tile.update_cost_label(costs[neighbor_position])
+		_update_costs(current_position)
 
 		# Uncomment to see the calculations much slower,
 		# as long as this line vvvvv
@@ -240,19 +275,7 @@ func generate_flow_field() -> void:
 
 	# Flow direction
 	for tile_position in tiles:
-		var current_tile : Tile = get_tile(tile_position)
-		var neighbors : Dictionary[Vector2i, Tile] = \
-			current_tile.get_neighbors()
-
-		for neighbor_position in neighbors:
-			if neighbor_position not in costs or \
-				tile_position not in costs:
-					continue
-
-			if costs[neighbor_position] <= costs[tile_position]:
-				var neighbor_tile : Tile = neighbors[neighbor_position]
-				current_tile.set_next_tile(neighbor_tile)
-				break
+		_update_flow(tile_position)
 
 		# Uncomment to see the calculations much slower
 		#await get_tree().process_frame
@@ -327,6 +350,10 @@ func can_place_unit() -> bool:
 	return (selected_unit_scene != null) and \
 		(selected_tile_position != Vector2i.ZERO) and \
 		get_tile(selected_tile_position).is_buildable()
+
+
+func can_pathfind() -> bool:
+	return true
 
 
 func _on_tide_cooldown_timer_timeout() -> void:
