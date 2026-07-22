@@ -15,7 +15,18 @@ const MAX_COST : int = 9999
 @export_category("Tiles")
 @export var tile_y : int = 17
 
+#region Sand Tiles
 @export_group("Sand")
+@export var sand_path_sprite : Texture :
+	get:
+		if not sand_path_sprite:
+			sand_path_sprite = preload("uid://tnt4o36muulu")
+		return sand_path_sprite
+@export var sand_tile_sprite : Texture :
+	get:
+		if not sand_tile_sprite:
+			sand_tile_sprite = preload("uid://c1xhmon1q60mt")
+		return sand_tile_sprite
 @export var sand_scene : PackedScene :
 	get:
 		if not sand_scene:
@@ -29,8 +40,20 @@ const MAX_COST : int = 9999
 			sandcastle_scene = preload("uid://81xce2bpxx7n")
 		return sandcastle_scene
 @export var sand_castle_position : Vector2i = Vector2i(3, 8)
+#endregion
 
+#region Water Tiles
 @export_group("Water")
+@export var water_path_sprite : Texture :
+	get:
+		if not water_path_sprite:
+			water_path_sprite = preload("uid://cmcgi0e5hvyi2")
+		return water_path_sprite
+@export var water_tile_sprite : Texture :
+	get:
+		if not water_tile_sprite:
+			water_tile_sprite = preload("uid://diu3jxdokpb7u")
+		return water_tile_sprite
 @export var water_scene : PackedScene :
 	get:
 		if not water_scene:
@@ -38,7 +61,21 @@ const MAX_COST : int = 9999
 		return water_scene
 @export var water_x : int = 20
 @export_subgroup("Water Spawner")
+@export var water_spawner_scene : PackedScene :
+	get:
+		if not water_spawner_scene:
+			water_spawner_scene = preload("uid://l00qv8rrs54v")
+		return water_spawner_scene
+@export var water_spawner_positions : Array[Vector2i] = [
+	Vector2i(35, 2),
+	Vector2i(35, 5),
+	Vector2i(35, 8),
+	Vector2i(35, 11),
+	Vector2i(35, 14),
+]
+#endregion
 
+#region Tide
 @export_group("Tide")
 @export var time_between_tide_steps : float = 1.0
 @export_subgroup("High")
@@ -48,8 +85,9 @@ const MAX_COST : int = 9999
 @export var really_high_tide_steps : int = 10
 @export var really_high_tide_duration : float = 4.0
 @export var really_high_tide_chance : float = 0.15
+#endregion
 
-
+#region Variables
 var sand_units : Node2D = null
 var water_units : Node2D = null
 
@@ -57,23 +95,24 @@ var selected_unit_scene : PackedScene = null
 
 var tiles : Dictionary[Vector2i, Tile] = {}
 
+var path_to_sandcastle : Array[Tile] = []
+
 var selected_tile_position : Vector2i = Vector2i.ZERO
 
 var tile_size : int = 0
 
 var really_high_tide : bool = false
+var path_blocked : bool = false
+#endregion
 
-# Flow field
-var costs : Dictionary[Vector2i, int] = {}
-var visited : Dictionary[Vector2i, bool] = {}
-var queue : Array[Vector2i] = []
-
-
+#region Onready
 @onready var sand_tiles : Node2D = %SandTiles
 @onready var water_tiles : Node2D = %WaterTiles
+@onready var water_spawners : Node2D = %WaterSpawners
 
 @onready var tide_cooldown_timer : Timer = %TideCooldownTimer
 @onready var tide_duration_timer : Timer = %TideDurationTimer
+#endregion
 
 
 func _ready() -> void:
@@ -98,13 +137,12 @@ func _ready() -> void:
 	var entity : WaterEntity = entity_scene.instantiate()
 	entity.global_position = get_tile(Vector2i(20, 16)).unit_target.global_position
 	entity.current_position = Vector2i(20, 16)
-	water_units = get_tree().get_first_node_in_group("WaterUnits")
 	water_units.add_child(entity)
 	selected_unit_scene = load("uid://chehuhpiikr44")
 
 
-func _input(event: InputEvent) -> void:
-	if event.is_pressed():
+func _physics_process(_delta: float) -> void:
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		if can_place_unit():
 			_place_unit()
 
@@ -155,6 +193,13 @@ func _load_water_tiles() -> void:
 			water_tile.current_position = tile_position
 			water_tiles.add_child(water_tile)
 
+			if tile_position in water_spawner_positions:
+				var water_spawner : WaterSpawner = water_spawner_scene.instantiate() as WaterSpawner
+				water_spawner.global_position = get_placement(tile_position)
+				water_spawner.current_position = tile_position
+				water_tile.object_unit = water_spawner
+				water_spawners.add_child(water_spawner)
+
 
 func _find_neighbor_tiles_for_each_tile() -> void:
 	for tile in tiles.values():
@@ -172,22 +217,21 @@ func _place_unit() -> void:
 		sand_units.add_child(unit)
 
 		if unit is SandObject:
-			if not can_pathfind():
+			if path_blocked:
 				push_error("Don't block the route!")
 				return
 			tile.set_walkable(false)
-			_update_costs(selected_tile_position)
-			_update_flow(selected_tile_position)
+			generate_flow_field()
 
 	elif unit is WaterUnit:
 
 		if unit is WaterObject:
-			if not can_pathfind():
+			if path_blocked:
 				push_error("Don't block the route!")
 				return
 			tile.set_walkable(false)
-			_update_costs(selected_tile_position)
-			_update_flow(selected_tile_position)
+			tile.set_next_tile(null)
+			generate_flow_field()
 
 		water_units.add_child(unit)
 
@@ -197,61 +241,24 @@ func _place_unit() -> void:
 	tile.set_buildable(false)
 
 
-func _update_costs(tile_position : Vector2i) -> void:
-	var current_tile : Tile = get_tile(tile_position)
-	var neighbors : Dictionary[Vector2i, Tile] = \
-		current_tile.get_neighbors()
-
-	# Loop through current_tile's neighbors
-	for neighbor_position in neighbors:
-		var neighbor_tile : Tile = neighbors[neighbor_position]
-
-		# Skip if not walkable
-		if not neighbor_tile.is_walkable():
-			costs[neighbor_position] = MAX_COST
-			continue
-
-		# Skip if already visited
-		if neighbor_position in visited:
-			continue
-
-		queue.append(neighbor_position)
-
-		visited[neighbor_position] = true
-		costs[neighbor_position] = costs[tile_position] + COST_INCREMENT
-
-		# Debug
-		neighbor_tile.update_cost_label(costs[neighbor_position])
-
-
-func _update_flow(tile_position : Vector2i) -> void:
-	var current_tile : Tile = get_tile(tile_position)
-	var neighbors : Dictionary[Vector2i, Tile] = \
-		current_tile.get_neighbors()
-
-	for neighbor_position in neighbors:
-		if neighbor_position not in costs or \
-			tile_position not in costs:
-				continue
-
-		if costs[neighbor_position] <= costs[tile_position]:
-			var neighbor_tile : Tile = neighbors[neighbor_position]
-			current_tile.set_next_tile(neighbor_tile)
-			break
-
-
 func generate_flow_field() -> void:
-	# Clear
-	costs.clear()
-	visited.clear()
-	queue.clear()
-
+	var costs : Dictionary[Vector2i, int] = {}
+	var visited : Dictionary[Vector2i, bool] = {}
+	var queue : Array[Vector2i] = []
 	var target_position : Vector2i = Vector2i(-1, -1)
+
+	# Reset path tile sprites
+	for path in path_to_sandcastle:
+		if path is WaterTile:
+			path.sprite.texture = water_tile_sprite
+		elif path is SandTile:
+			path.sprite.texture = sand_tile_sprite
 
 	# Find target position
 	for tile in tiles.values():
 		if tile.object_unit is Sandcastle:
 			target_position = tile.current_position
+			tile.set_next_tile(null)
 
 	if target_position == Vector2i(-1, -1):
 		push_error("Sandcastle not found; cannot start Flow Field.")
@@ -261,10 +268,33 @@ func generate_flow_field() -> void:
 	visited[target_position] = true
 	queue.append(target_position)
 
-	# Breadth-first Search
+	# Cost calculation using BFS
 	while not queue.is_empty():
 		var current_position : Vector2i = queue.pop_front()
-		_update_costs(current_position)
+		var current_tile : Tile = get_tile(current_position)
+		var neighbors : Dictionary[Vector2i, Tile] = \
+			current_tile.get_neighbors()
+
+		# Loop through current_tile's neighbors
+		for neighbor_position in neighbors:
+			var neighbor_tile : Tile = neighbors[neighbor_position]
+ 
+			# Skip if not walkable
+			if not neighbor_tile.is_walkable():
+				costs[neighbor_position] = MAX_COST
+				continue
+
+			# Skip if already visited
+			if neighbor_position in visited:
+				continue
+
+			queue.append(neighbor_position)
+
+			visited[neighbor_position] = true
+			costs[neighbor_position] = costs[current_position] + COST_INCREMENT
+
+			# Debug
+			neighbor_tile.update_cost_label(costs[neighbor_position])
 
 		# Uncomment to see the calculations much slower,
 		# as long as this line vvvvv
@@ -273,12 +303,82 @@ func generate_flow_field() -> void:
 		# vvvvv
 		#await get_tree().process_frame
 
-	# Flow direction
+	# Flow calculation
 	for tile_position in tiles:
-		_update_flow(tile_position)
+		var current_tile : Tile = get_tile(tile_position)
+		var neighbors : Dictionary[Vector2i, Tile] = \
+			current_tile.get_neighbors()
+
+		var possible_next_tiles : Array[Tile] = []
+
+		for neighbor_position in neighbors:
+			if neighbor_position not in costs or \
+				tile_position not in costs:
+					continue
+
+			if costs[neighbor_position] <= costs[tile_position]:
+				var neighbor_tile : Tile = neighbors[neighbor_position]
+				possible_next_tiles.append(neighbor_tile)
+				continue
+
+		if possible_next_tiles.is_empty():
+			continue
+
+		# Randomize next_tile idk
+		var chosen_tile : Tile = possible_next_tiles.pick_random()
+		current_tile.set_next_tile(chosen_tile)
 
 		# Uncomment to see the calculations much slower
 		#await get_tree().process_frame
+
+	if water_spawners.get_child_count() <= 0:
+		push_error("WaterSpawners not real?")
+		return
+
+	var spawners : Array[Node] = water_spawners.get_children()
+	var can_path : Array[WaterSpawner] = []
+
+	# Path from Spawners to Sandcastle
+	for spawner in spawners:
+		if not spawner is WaterSpawner:
+			push_error("How did a non-WaterSpawner get here?")
+			continue
+		var spawner_tile : Tile = spawner.current_tile
+		var spawner_next_tile : Tile = spawner_tile.get_next_tile()
+		if spawner_next_tile == null:
+			push_error("Spawner has no next tile.")
+			return
+
+		var next_tile : Tile = spawner_next_tile
+
+		# Actual path-ing
+		while next_tile.get_next_tile() != null:
+			next_tile = next_tile.get_next_tile()
+			if next_tile == null:
+				break
+
+			# Find path find (?)
+			if next_tile.object_unit != null:
+				if next_tile.object_unit is Sandcastle:
+					can_path.append(spawner)
+					break
+
+			# Visual stuff
+			if next_tile is SandTile:
+				next_tile.sprite.texture = sand_path_sprite
+			elif next_tile is WaterTile:
+				next_tile.sprite.texture = water_path_sprite
+
+			# Actual-er path-ing (?)
+			if next_tile in path_to_sandcastle:
+				continue
+			path_to_sandcastle.append(next_tile)
+
+		# Last pathfind check idk
+		if can_path.is_empty():
+			path_blocked = true
+		else:
+			path_blocked = false
 
 
 func get_tile(pos : Vector2i) -> Tile:
@@ -349,11 +449,8 @@ func get_tiles() -> Dictionary:
 func can_place_unit() -> bool:
 	return (selected_unit_scene != null) and \
 		(selected_tile_position != Vector2i.ZERO) and \
-		get_tile(selected_tile_position).is_buildable()
-
-
-func can_pathfind() -> bool:
-	return true
+		get_tile(selected_tile_position).is_buildable() and \
+		get_tile(selected_tile_position).object_unit == null
 
 
 func _on_tide_cooldown_timer_timeout() -> void:

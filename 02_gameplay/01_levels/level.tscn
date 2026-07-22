@@ -15,6 +15,9 @@ unique_name_in_owner = true
 [node name="WaterTiles" type="Node2D" parent="." unique_id=47345623]
 unique_name_in_owner = true
 
+[node name="WaterSpawners" type="Node2D" parent="WaterTiles" unique_id=1245039493]
+unique_name_in_owner = true
+
 [node name="TideCooldownTimer" type="Timer" parent="." unique_id=364411897]
 unique_name_in_owner = true
 one_shot = true

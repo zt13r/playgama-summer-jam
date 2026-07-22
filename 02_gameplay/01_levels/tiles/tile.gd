@@ -21,6 +21,7 @@ var walkable : bool = true
 
 @onready var unit_target : Marker2D = %UnitTarget
 @onready var selected_overlay : Sprite2D = %SelectedOverlay
+@onready var sprite : Sprite2D = $Sprite
 
 
 func _ready() -> void:
@@ -75,6 +76,10 @@ func find_neighbor_tiles() -> void:
 
 
 func set_next_tile(tile : Tile) -> void:
+	if tile == null:
+		$ArrowDebug.hide()
+		return
+
 	if tile not in neighbors.values():
 		push_error("Can't set next tile because passed Tile is not a neighbor.")
 		return

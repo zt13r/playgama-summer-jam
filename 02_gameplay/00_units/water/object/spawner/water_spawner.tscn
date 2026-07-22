@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://l00qv8rrs54v"]
+
+[ext_resource type="Script" uid="uid://ckkoq7qmc4wvw" path="res://02_gameplay/00_units/water/object/spawner/water_spawner.gd" id="1_53gpn"]
+[ext_resource type="Texture2D" uid="uid://diu3jxdokpb7u" path="res://03_assets/art/environment/water.png" id="2_kphej"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_53gpn"]
+size = Vector2(32, 32)
+
+[node name="WaterSpawner" type="Area2D" unique_id=2038361158]
+script = ExtResource("1_53gpn")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=1845373826]
+shape = SubResource("RectangleShape2D_53gpn")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=13432476]
+self_modulate = Color(0, 0, 1, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("2_kphej")
