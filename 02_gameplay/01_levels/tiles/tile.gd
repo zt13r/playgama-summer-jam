@@ -78,6 +78,7 @@ func find_neighbor_tiles() -> void:
 func set_next_tile(tile : Tile) -> void:
 	if tile == null:
 		$ArrowDebug.hide()
+		next_tile = null
 		return
 
 	if tile not in neighbors.values():
@@ -134,6 +135,7 @@ func set_buildable(can : bool) -> void:
 
 func set_walkable(can : bool) -> void:
 	walkable = can
+	set_next_tile(null)
 
 
 func is_buildable() -> bool:

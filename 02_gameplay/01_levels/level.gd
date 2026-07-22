@@ -102,7 +102,6 @@ var selected_tile_position : Vector2i = Vector2i.ZERO
 var tile_size : int = 0
 
 var really_high_tide : bool = false
-var path_blocked : bool = false
 #endregion
 
 #region Onready
@@ -217,7 +216,7 @@ func _place_unit() -> void:
 		sand_units.add_child(unit)
 
 		if unit is SandObject:
-			if path_blocked:
+			if not can_pathfind():
 				push_error("Don't block the route!")
 				return
 			tile.set_walkable(false)
@@ -226,11 +225,10 @@ func _place_unit() -> void:
 	elif unit is WaterUnit:
 
 		if unit is WaterObject:
-			if path_blocked:
+			if not can_pathfind():
 				push_error("Don't block the route!")
 				return
 			tile.set_walkable(false)
-			tile.set_next_tile(null)
 			generate_flow_field()
 
 		water_units.add_child(unit)
@@ -331,12 +329,17 @@ func generate_flow_field() -> void:
 		# Uncomment to see the calculations much slower
 		#await get_tree().process_frame
 
+	# Draw path (find)
+	can_pathfind()
+
+
+func can_pathfind() -> bool:
 	if water_spawners.get_child_count() <= 0:
 		push_error("WaterSpawners not real?")
-		return
+		return false
 
 	var spawners : Array[Node] = water_spawners.get_children()
-	var can_path : Array[WaterSpawner] = []
+	var spawners_that_can_pathfind : int = 0
 
 	# Path from Spawners to Sandcastle
 	for spawner in spawners:
@@ -347,38 +350,38 @@ func generate_flow_field() -> void:
 		var spawner_next_tile : Tile = spawner_tile.get_next_tile()
 		if spawner_next_tile == null:
 			push_error("Spawner has no next tile.")
-			return
+			return false
+		spawner_tile.sprite.texture = water_path_sprite
 
 		var next_tile : Tile = spawner_next_tile
 
 		# Actual path-ing
 		while next_tile.get_next_tile() != null:
 			next_tile = next_tile.get_next_tile()
-			if next_tile == null:
-				break
 
 			# Find path find (?)
 			if next_tile.object_unit != null:
 				if next_tile.object_unit is Sandcastle:
-					can_path.append(spawner)
+					spawners_that_can_pathfind += 1
 					break
 
-			# Visual stuff
+			# Change sprite accordingly (visual)
 			if next_tile is SandTile:
 				next_tile.sprite.texture = sand_path_sprite
 			elif next_tile is WaterTile:
 				next_tile.sprite.texture = water_path_sprite
 
-			# Actual-er path-ing (?)
+			# Skip if already a path
 			if next_tile in path_to_sandcastle:
 				continue
+
+			# Add to paths array
 			path_to_sandcastle.append(next_tile)
 
-		# Last pathfind check idk
-		if can_path.is_empty():
-			path_blocked = true
-		else:
-			path_blocked = false
+	if spawners_that_can_pathfind == spawners.size():
+		return true
+
+	return false
 
 
 func get_tile(pos : Vector2i) -> Tile:
